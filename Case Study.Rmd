@@ -7,7 +7,7 @@ date: "2026-10-13"
 
 ```{r setup}
 library(tidyverse)
-library(patchwork)
+library(leaflet)
 library(p8105.datasets)
 ```
 
@@ -138,10 +138,28 @@ Which airbnb hosts are the most/ best reviewed?
 
 #Some Host Stuff
 
+
+Make a leaflet map 
 ```{r}
+
+pal= colorNumeric(
+  palette = "viridis", 
+  domain = 1:500
+)
+
 nyc_airbnb |> 
-filter(calculated_host_listings_count > 10) |>  view()
+ filter(neighbourhood_group == "Manhattan") |> 
+  filter (price< 500) |> 
+  filter(room_type == "Entire home/apt") |> 
+  #sample_n(50) |> 
+  leaflet () |> 
+  addTiles() |> 
+  addMarkers (~lat, ~long) |> 
+  addCircleMarkers(~lat, ~long, ~pal(price), radius = .5)
 ```
+
+Make a leaflet map 
+
 
 
 Has the number increased or decreased over time? 
